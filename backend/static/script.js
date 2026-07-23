@@ -3,7 +3,10 @@
 // Click the mic to start recording, click again to stop and send.
 // ---------------------------------------------------------------------
 
-const DEFAULT_BACKEND_URL = "http://localhost:8000";
+// When served from the same FastAPI app (single-deployment setup), leave this
+// blank so requests go to the same origin the page was loaded from. Only set
+// a real URL here (or via Settings) if the frontend is hosted separately.
+const DEFAULT_BACKEND_URL = "";
 
 const els = {
   micBtn: document.getElementById("micBtn"),

@@ -18,6 +18,7 @@ from typing import List, Optional
 
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from config import settings
@@ -30,7 +31,7 @@ logger = logging.getLogger("voice-agent.main")
 
 app = FastAPI(
     title="Voice AI Agent",
-    description="Real-time voice agent: Whisper STT + LLM (with tools) + TTS",
+    description="Real-time voice agent: Whisper STT + LLM (with tools) + ElevenLabs TTS",
     version="1.0.0",
 )
 
@@ -92,7 +93,7 @@ async def on_startup():
         for w in warnings:
             logger.warning("Config warning: %s", w)
     else:
-        logger.info("Configuration OK. LLM=%s STT=%s TTS=%s", settings.LLM_PROVIDER, settings.STT_PROVIDER, settings.TTS_PROVIDER)
+        logger.info("Configuration OK. LLM=%s STT=%s", settings.LLM_PROVIDER, settings.STT_PROVIDER)
 
 
 # --------------------------------------------------------------------------
@@ -199,3 +200,12 @@ if __name__ == "__main__":
     import uvicorn
 
     uvicorn.run("main:app", host="0.0.0.0", port=settings.PORT, reload=True)
+
+
+# --------------------------------------------------------------------------
+# Serve the frontend (single-deployment setup: one URL for UI + API).
+# Mounted last so it never shadows the /api/* routes above.
+# --------------------------------------------------------------------------
+_static_dir = os.path.join(os.path.dirname(__file__), "static")
+if os.path.isdir(_static_dir):
+    app.mount("/", StaticFiles(directory=_static_dir, html=True), name="static")
