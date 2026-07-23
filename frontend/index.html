@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Voice Agent</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="app">
+
+    <header class="topbar">
+      <div class="brand">
+        <span class="dot" id="statusDot"></span>
+        <span class="brand-name">Voice Agent</span>
+      </div>
+      <button id="settingsBtn" class="icon-btn" title="Settings" aria-label="Settings">⚙</button>
+    </header>
+
+    <main class="stage">
+      <div id="transcript" class="transcript" aria-live="polite">
+        <div class="empty-state">
+          <p>Tap the mic and say something.</p>
+        </div>
+      </div>
+
+      <div class="controls">
+        <p id="statusText" class="status-text">Idle</p>
+
+        <button id="micBtn" class="mic-btn" aria-label="Start recording">
+          <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="23"/>
+            <line x1="8" y1="23" x2="16" y2="23"/>
+          </svg>
+        </button>
+
+        <form id="textForm" class="text-form">
+          <input id="textInput" type="text" placeholder="...or type a message" autocomplete="off" />
+          <button type="submit" class="send-btn" aria-label="Send">➤</button>
+        </form>
+      </div>
+    </main>
+
+    <audio id="player" hidden></audio>
+  </div>
+
+  <div id="settingsPanel" class="settings-panel" hidden>
+    <div class="settings-card">
+      <h2>Settings</h2>
+      <label for="backendUrl">Backend URL</label>
+      <input id="backendUrl" type="text" placeholder="http://localhost:8000" />
+      <p class="hint">The FastAPI backend must be running and reachable at this address.
+      See the README for deployment instructions.</p>
+      <div class="settings-actions">
+        <button id="clearHistoryBtn" class="secondary-btn">Clear conversation</button>
+        <button id="saveSettingsBtn" class="primary-btn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
