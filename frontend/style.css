@@ -217,6 +217,10 @@ body {
   padding: 20px;
 }
 
+.settings-panel[hidden] {
+  display: none;
+}
+
 .settings-card {
   background: var(--surface);
   border: 1px solid var(--border);

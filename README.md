@@ -154,32 +154,7 @@ Tap the mic and talk.
 
 ## Deployment
 
-### Option A — Single deployment (recommended for demos)
-
-The backend can serve the frontend directly (files live in `backend/static/`), so the
-**entire project deploys as one service with one URL** — no CORS setup, no separate
-"Backend URL" to configure. This is the simplest way to get a shareable link.
-
-**Render:**
-1. New **Web Service** → connect your repo.
-2. Root directory: `backend`
-3. Build command: `pip install -r requirements.txt`
-4. Start command: `uvicorn main:app --host 0.0.0.0 --port $PORT`
-5. Add environment variable `GROQ_API_KEY` (and `OPENAI_API_KEY` / `ELEVENLABS_API_KEY` only if
-   you're using those providers instead of the free defaults).
-6. Deploy. Your one URL (e.g. `https://your-app.onrender.com`) serves both the UI and the API.
-
-Railway/Fly.io work the same way — same root directory, same start command, same Dockerfile.
-
-> Note: Render/Railway/Fly's free tiers spin down after inactivity, so the first request after
-> idling can take 20–30 seconds to wake up. Normal on free plans.
-
-### Option B — Split deployment (frontend on Vercel, backend elsewhere)
-
-Useful if you want a CDN-hosted static frontend separate from the API, or plan to add more
-frontend tooling later.
-
-#### Frontend → Vercel
+### Frontend → Vercel
 
 The frontend is a static site, so it deploys to Vercel as-is, with no build step:
 
@@ -191,7 +166,7 @@ The frontend is a static site, so it deploys to Vercel as-is, with no build step
 6. Open the deployed URL, click the gear icon, and set **Backend URL** to your deployed
    backend's URL (see below).
 
-#### Backend → Render / Railway / Fly.io
+### Backend → Render / Railway / Fly.io (recommended)
 
 > **Why not Vercel for the backend?** Vercel's serverless/edge functions are built for short,
 > stateless requests. This backend's pipeline (Whisper → LLM → TTS) can take several
